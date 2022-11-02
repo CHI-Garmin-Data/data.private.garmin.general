@@ -55,9 +55,8 @@ class dataset:
         for root, dirs, files in walk( self.get_dataset(), topdown=True ):
             for filename in files:
 
-                foundPath = join(root, filename)
-                entry = generate_entry(self.get_dataset(), foundPath)
-                print(entry)
+                foundPath = join( root, filename )
+                entry = generate_entry( self.get_dataset(), foundPath )
 
                 self.found.append(entry)
 
