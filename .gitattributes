@@ -1,0 +1,20 @@
+# Default for all
+* text=auto
+
+*.py diff=py eol=lf
+
+*.csv diff=text eol=lf
+*.json diff=text eol=lf
+*.tsv diff=text eol=lf
+*.xml diff=text eol=lf
+
+*.sh diff=sh eol=lf
+*.md diff=markdown eol=crlf
+
+
+# Git attributes
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+/.github export-ignore
+CHANGELOG.md export-ignore
