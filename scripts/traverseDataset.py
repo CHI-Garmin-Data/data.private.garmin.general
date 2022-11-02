@@ -39,10 +39,12 @@ class dataset:
         self.datasetPath = None
 
         self.found = None
+        self.index = None
 
 
     def run(self):
         self.init_found()
+        self.init_index()
 
         self.parent = repository_parent()
         self.set_dataset( combine_str( self.parent, self.directory_name ) )
@@ -51,7 +53,6 @@ class dataset:
 
 
     def __traverse(self):
-        
         for root, dirs, files in walk( self.get_dataset(), topdown=True ):
             for filename in files:
 
@@ -90,4 +91,13 @@ class dataset:
 
     def init_found(self):
         self.set_found( [] )
+
+    def get_index(self):
+        return self.index
+
+    def set_index(self, v):
+        self.index = v
+
+    def init_index(self):
+        self.set_index( [] )
 

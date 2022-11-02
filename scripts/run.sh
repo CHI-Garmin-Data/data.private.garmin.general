@@ -1,4 +1,4 @@
 #!/usr/bin/bash
-source ./venv/bin/activate
+source ./.venv/bin/activate
 
-python ./automatedTasks.py
+python3 ./automatedTasks.py
