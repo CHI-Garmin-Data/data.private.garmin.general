@@ -14,25 +14,42 @@ from typing \
 
 pathToDataset = '/dataset'
 
+def get_parent( fromPath ):
+    return abspath( join( fromPath, pardir ) )
+
+def repository_parent():
+    return get_parent( getcwd() )
+
+def combine_str(a, b):
+    return a + b
 
 class dataset:
     def __init__(self):
         global pathToDataset
-        
-        self.set_debug_mode(False)
+
+        self.debug = False
 
         self.directory_name: Final[str] = pathToDataset
 
         self.parent = None
         self.datasetPath = None
 
+        self.found = None
 
 
     def run(self):
-        currentPath = getcwd()
-        self.parent = abspath(join(currentPath, pardir))
+        self.init_found()
 
-        self.set_dataset( self.parent + self.directory_name )
+        self.parent = repository_parent()
+        self.set_dataset( combine_str( self.parent, self.directory_name ) )
+
+        self.__traverse()
+
+
+    def __traverse(self):
+        for root, dirs, files in walk( self.get_dataset(), topdown=True ):
+            for filename in files:
+                print(join(root, filename))
         
 
     def get_dataset(self):
@@ -41,14 +58,25 @@ class dataset:
     def set_dataset(self, value):
         self.datasetPath = value
 
+
     def get_parent(self):
         return self.parent
 
     def set_parent(self, value):
         self.parent = value
 
+    
     def is_debugging(self):
         return self.debug
 
     def set_debug_mode(self, value):
         self.debug = value
+
+    def get_found(self):
+        return self.found
+
+    def set_found(self, v):
+        self.found = v
+
+    def init_found(self):
+        self.set_found( [] )
