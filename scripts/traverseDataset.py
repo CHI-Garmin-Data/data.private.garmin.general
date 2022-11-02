@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 from os \
     import getcwd, \
            walk, \
@@ -12,7 +11,11 @@ from os.path \
 from typing \
     import Final
 
+from datasetEntry \
+    import entry_found, generate_entry
+
 pathToDataset = '/dataset'
+
 
 def get_parent( fromPath ):
     return abspath( join( fromPath, pardir ) )
@@ -22,6 +25,7 @@ def repository_parent():
 
 def combine_str(a, b):
     return a + b
+
 
 class dataset:
     def __init__(self):
@@ -47,10 +51,16 @@ class dataset:
 
 
     def __traverse(self):
+        
         for root, dirs, files in walk( self.get_dataset(), topdown=True ):
             for filename in files:
-                print(join(root, filename))
-        
+
+                foundPath = join(root, filename)
+                entry = generate_entry(self.get_dataset(), foundPath)
+                print(entry)
+
+                self.found.append(entry)
+
 
     def get_dataset(self):
         return self.datasetPath
@@ -72,6 +82,7 @@ class dataset:
     def set_debug_mode(self, value):
         self.debug = value
 
+
     def get_found(self):
         return self.found
 
@@ -80,3 +91,4 @@ class dataset:
 
     def init_found(self):
         self.set_found( [] )
+
