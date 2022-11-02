@@ -1,5 +1,6 @@
 #!/usr/bin/python
-import traverseDataset
+from procedures \
+    import traverseDataset
 
 
 def main():

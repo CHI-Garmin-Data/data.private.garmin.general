@@ -11,7 +11,7 @@ from os.path \
 from typing \
     import Final
 
-from datasetEntry \
+from procedures.objects.datasetEntry \
     import entry_found, generate_entry
 
 pathToDataset = '/dataset'
