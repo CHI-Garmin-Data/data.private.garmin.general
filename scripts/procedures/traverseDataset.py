@@ -9,6 +9,7 @@ from os.path \
     import abspath, \
            join
 
+from os.path import splitext
 
 from typing \
     import Final
@@ -20,6 +21,7 @@ from procedures.objects.datasetEntry \
 from procedures.objects.indices \
     import index_entry
 
+
 pathToDataset = '/dataset'
 
 
@@ -29,8 +31,16 @@ def get_parent( fromPath ):
 def repository_parent():
     return get_parent( getcwd() )
 
-def combine_str(a, b):
+def combine_str( a, b ):
     return a + b
+
+def is_fit_file( path ):
+    splitted = splitext( path )
+
+    if( splitted[ len( splitted ) -1 ] == '.fit' ):
+        return True
+
+    return False
 
 
 class dataset:
@@ -47,6 +57,9 @@ class dataset:
         self.found = None
         self.index = None
 
+    def size( self ):
+        return len( self.found )
+
 
     def run( self ):
         self.init_found()
@@ -60,12 +73,18 @@ class dataset:
 
 
     def __traverse( self ):
-        for root, dirs, files in walk( self.get_dataset(), topdown=True ):
-            for filename in files:
+        for root, dirs, files \
+            in walk( self.get_dataset(), topdown=True ):
+
+            for filename \
+                in files:
 
                 foundPath = join( root, filename )
-                entry = generate_entry( self.get_dataset(), foundPath )
-                self.found.append( entry )
+
+                if( is_fit_file( foundPath ) ):
+                    entry = generate_entry( self.get_dataset(), foundPath )
+                    self.found.append( entry )
+
 
     def __index( self ):
         if self.found == None:
@@ -73,16 +92,18 @@ class dataset:
 
         iterator = 0
 
-        for element in self.found:
+        for element \
+            in self.found:
+
             record_date = element.get_date()
 
             if not self.origin_is_in_set( record_date ):
                 new_indice = index_entry()
 
-                new_indice.set_key(record_date)
-                new_indice.set_start_position(iterator)
+                new_indice.set_key( record_date )
+                new_indice.set_start_position( iterator )
                 
-                self.index.append(new_indice)
+                self.index.append( new_indice )
 
             iterator = iterator + 1
 
@@ -90,7 +111,9 @@ class dataset:
     def origin_is_in_set( self, key ):
         rV = False
 
-        for indice in self.index:
+        for indice \
+            in self.index:
+
             if indice.compare( key ):
                 rV = True
                 break
@@ -127,6 +150,7 @@ class dataset:
 
     def init_found( self ):
         self.set_found( [] )
+
 
     def get_index( self ):
         return self.index

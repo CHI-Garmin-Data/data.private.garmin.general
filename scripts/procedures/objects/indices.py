@@ -17,14 +17,14 @@ class index_entry:
     def set_key( self, v ):
         self.key = str( v )
 
-    def compare(self, wValue):
-        return str(self.key) == str(wValue)
+    def compare( self, wValue ):
+        return str( self.key ) == str( wValue )
 
 
-    def __str__(self):
+    def __str__( self ):
         rV = ''
 
-        rV = rV + 'Start_position:' + str(self.get_start_position()) + '\r\n'
-        rV = rV + 'Key:' + str(self.get_key()) + '\r\n'
+        rV = rV + 'Start_position:' + str( self.get_start_position() ) + '\r\n'
+        rV = rV + 'Key:' + str( self.get_key() ) + '\r\n'
 
         return str(rV)
