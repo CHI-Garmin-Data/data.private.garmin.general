@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import ntpath
 
+
 def generate_entry( rootOfDataset, foundFile ):
     entry = entry_found()
     entry.set_fullPath( foundFile )
