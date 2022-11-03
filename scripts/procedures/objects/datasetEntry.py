@@ -13,7 +13,7 @@ def generate_entry( rootOfDataset, foundFile ):
     rest_date = foundFile[1 + lengthOfRoot:(-file_len - 1)]
 
     if "/" in rest_date:
-        rest_date = rest_date.replace ("/", ":" )
+        rest_date = rest_date.replace( "/", ":" )
     
     if "\\" in rest_date:
         rest_date.replace( "\\", ":" )

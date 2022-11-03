@@ -9,6 +9,7 @@ from os.path \
     import abspath, \
            join
 
+from os.path import splitext
 
 from typing \
     import Final
@@ -30,8 +31,16 @@ def get_parent( fromPath ):
 def repository_parent():
     return get_parent( getcwd() )
 
-def combine_str(a, b):
+def combine_str( a, b ):
     return a + b
+
+def is_fit_file( path ):
+    splitted = splitext( path )
+
+    if( splitted[ len( splitted ) -1 ] == '.fit' ):
+        return True
+
+    return False
 
 
 class dataset:
@@ -71,9 +80,10 @@ class dataset:
                 in files:
 
                 foundPath = join( root, filename )
-                entry = generate_entry( self.get_dataset(), foundPath )
 
-                self.found.append( entry )
+                if( is_fit_file( foundPath ) ):
+                    entry = generate_entry( self.get_dataset(), foundPath )
+                    self.found.append( entry )
 
 
     def __index( self ):

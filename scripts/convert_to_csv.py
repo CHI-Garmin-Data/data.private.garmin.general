@@ -5,8 +5,10 @@ from procedures \
 from procedures \
     import dataset_iterator
 
+import fitparse
 
 def main():
+
     traversal = traverseDataset.dataset()
     traversal.run()
 
@@ -14,7 +16,11 @@ def main():
     iterate.start_at_beginning()
     
     while( iterate.is_to_continue_towards_end() ):
-        e = iterate.get_value()
+        c = iterate.get_value()
+
+        print(c.get_fullPath())
+        exit()
+        
 
         iterate.forward()
         
