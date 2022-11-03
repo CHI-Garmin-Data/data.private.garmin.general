@@ -66,6 +66,7 @@ class fit_interpreter:
                     converted_from_t16 = convertWith.run()
                     self.updateTimestamp16( converted_from_t16 )
 
+
         except FitParseError as e:
             print(e)
 
