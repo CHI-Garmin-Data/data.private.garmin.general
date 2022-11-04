@@ -1,5 +1,6 @@
 #!/usr/bin/python
-from typing import Final
+from typing \
+    import Final
 
 # Garmin Labels
 const_latitude = 'position_lat'

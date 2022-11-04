@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from data.keystore \
+from data.store.keystore \
     import key_storage_database
 
 from fitparse \
@@ -17,6 +17,7 @@ import datetime
 
 lastTimestamp = None
 last16Timestamp = None
+
 
 class fit_interpreter:
     def __init__( self, entry ):
@@ -43,6 +44,7 @@ class fit_interpreter:
         global last16Timestamp
         last16Timestamp = None
 
+
     def load_into_memory( self ):
         try:
             debug( self.entry.get_fullPath() )
@@ -54,6 +56,7 @@ class fit_interpreter:
 
             for message in messages:
                 values = message.get_values()
+
                 # Loading and updating time
                 if automate_consts.const_timestamp in values:
                     t = self.timezone_conversion( datetime.datetime.timestamp( values[ automate_consts.const_timestamp ] ) )
@@ -61,18 +64,26 @@ class fit_interpreter:
                     self.default_timestamp_16()
 
                 if automate_consts.const_timestamp_16 in values:
-                    convertWith = T16converter( self.get_last_timestamp(), values[ automate_consts.const_timestamp_16 ] )
+                    convertWith = T16converter( self.get_last_timestamp(), \
+                                                values[ automate_consts.const_timestamp_16 ] )
+
                     converted_from_t16 = convertWith.run()
                     self.updateTimestamp16( converted_from_t16 )
 
 
                 if automate_consts.const_heart_rate in values:
-                    heartRate = values[automate_consts.const_heart_rate]
+                    heartRate = values[ automate_consts.const_heart_rate ]
+
                     t = self.latest_timestamp()
+                    
+                    insert_values = {}
 
+                    insert_values[ 'timestamp' ] = t
+                    insert_values[ 'heart_rate' ] = heartRate
 
+                    self.store.build_structure( self.entry.get_date(),  insert_values )
         except FitParseError as e:
-            print(e)
+            print( e )
 
 
     def updateTimestamp( self, t ):
@@ -105,10 +116,10 @@ class fit_interpreter:
             return self.get_last_timestamp()
 
         converted_t = self.get_last_timestamp()
-        filtered_converted_t = str(converted_t)[0:-6]
+        filtered_converted_t = str( converted_t )[0:-6]
         
         t16 = self.get_last_timestamp_16()
-        filtered_t16 = str(t16)[0:-6]
+        filtered_t16 = str( t16 )[0:-6]
 
         latest = None
 
@@ -120,7 +131,9 @@ class fit_interpreter:
         return str( latest )
 
     def timezone_conversion( self, timestamp_int ):
-        return datetime.datetime.fromtimestamp( timestamp_int, pytz.timezone( automate_consts.const_utc_denmark_copenhagen ) )
+        return datetime.datetime.fromtimestamp( timestamp_int, \
+                                                pytz.timezone( automate_consts.const_utc_denmark_copenhagen ) )
+
 
 def debug( fp ):
     state = 'loading: ' + str( fp )
