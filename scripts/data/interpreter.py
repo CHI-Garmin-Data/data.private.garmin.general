@@ -18,7 +18,6 @@ import datetime
 lastTimestamp = None
 last16Timestamp = None
 
-
 class fit_interpreter:
     def __init__( self, entry ):
         self.entry = entry
@@ -55,7 +54,7 @@ class fit_interpreter:
 
             for message in messages:
                 values = message.get_values()
-
+                # Loading and updating time
                 if automate_consts.const_timestamp in values:
                     t = self.timezone_conversion( datetime.datetime.timestamp( values[ automate_consts.const_timestamp ] ) )
                     self.updateTimestamp( t )
@@ -65,6 +64,11 @@ class fit_interpreter:
                     convertWith = T16converter( self.get_last_timestamp(), values[ automate_consts.const_timestamp_16 ] )
                     converted_from_t16 = convertWith.run()
                     self.updateTimestamp16( converted_from_t16 )
+
+
+                if automate_consts.const_heart_rate in values:
+                    heartRate = values[automate_consts.const_heart_rate]
+                    t = self.latest_timestamp()
 
 
         except FitParseError as e:
@@ -78,7 +82,6 @@ class fit_interpreter:
 
         if not self.get_last_timestamp() == t:
             self.set_last_timestamp( t )
-            #print('T:' + str( self.get_last_timestamp() ) )
 
         return self.get_last_timestamp()
 
@@ -90,7 +93,6 @@ class fit_interpreter:
 
         if not self.get_last_timestamp_16() == t:
             self.set_last_timestamp_16( t )
-            #print('T16:' + str(self.get_last_timestamp_16()))
 
         return self.get_last_timestamp_16()
 
